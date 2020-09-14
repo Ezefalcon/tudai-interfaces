@@ -9,22 +9,20 @@ export class DrawTool {
         this.posY = 0;
     }
 
-    draw(e, canvas) {
+    draw(e, context) {
         // mouse left button must be pressed
         if (e.buttons !== 1) return;
         let posX = this.posX;
         let posY = this.posY;
 
-        const ctx = canvas.getContext();
+        context.beginPath();
 
-        ctx.beginPath(); // begin
-
-        this.setDrawTools(ctx);
-        ctx.moveTo(posX, posY); // from
+        this.setDrawTools(context);
+        context.moveTo(posX, posY); // from
         this.setPosition(e);
-        ctx.lineTo(posX, posY); // to
+        context.lineTo(posX, posY); // to
 
-        ctx.stroke(); // draw it!
+        context.stroke(); // draw it!
     }
 
     setDrawTools(context) {

@@ -7,6 +7,16 @@ export class Canvas {
         this.context = canvas.getContext("2d");
     }
 
+    setWidth(width) {
+        this.canvas.width = width;
+        this.width = this.canvas.width;
+    }
+
+    setHeight(height) {
+        this.canvas.height = height;
+        this.height = this.canvas.height;
+    }
+
     getContext() {
         return this.context;
     }
@@ -25,5 +35,9 @@ export class Canvas {
 
     clearContext() {
         this.context.clearRect(0, 0, this.width, this.height);
+    }
+
+    getImageData() {
+        return this.context.getImageData(0, 0, this.width, this.height);
     }
 }
