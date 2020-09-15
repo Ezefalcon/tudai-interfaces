@@ -9,7 +9,7 @@ export class Paint {
         this.contextTools = [];
         this.addEventsToCanvas();
         this.currentTool = null;
-        this.img;
+        this.img = null;
     }
 
     addContextTool(element, color) {
@@ -56,6 +56,8 @@ export class Paint {
             Filters.negative(this.img, this.canvas.context);
         } else if(value === 'sepia') {
             Filters.sepia(this.img, this.canvas)
+        } else if(value === 'binarization') {
+            Filters.binarization(this.img, this.canvas);
         }
     }
 
@@ -69,7 +71,13 @@ export class Paint {
     clearContext = () => {
         this.canvas.clearContext();
         this.img = null;
+        // FIXME
+        document.getElementById('fileInput').value = null;
     }
 
+    downloadImage = (e, downloadElement) => {
+        let dataUrl = this.canvas.saveImage();
+        downloadElement.href = dataUrl;
+    }
 
 }

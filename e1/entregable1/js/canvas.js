@@ -40,4 +40,9 @@ export class Canvas {
     getImageData() {
         return this.context.getImageData(0, 0, this.width, this.height);
     }
+
+    saveImage() {
+        return this.canvas.toDataURL("image/jpg");
+    }
+
 }

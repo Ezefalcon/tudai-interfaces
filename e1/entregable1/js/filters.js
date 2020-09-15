@@ -59,6 +59,22 @@ export class Filters {
         canvas.context.putImageData(imageData, 0, 0);
     }
 
+    static binarization = (imageObj, canvas, val)  => {
+
+        canvas.context.drawImage(imageObj, 0,0);
+        let imageData = canvas.getImageData();
+        let pixels = imageData.data;
+
+        for (let i = 0; i < pixels.length; i += 4) {
+            const red = pixels[i];
+            const green = pixels[i+1];
+            const blue = pixels[i+2];
+            const v = (red + green + blue >= 300) ? 280 : 0;
+            pixels[i] = pixels[i+1] = pixels[i+2] = v;
+        }
+
+        canvas.context.putImageData(imageData, 0, 0);
+    }
 
     static setTo255IfIsGreaterThanIt(val) {
         return val > 255 ? 255 : val;
