@@ -75,6 +75,45 @@ export class Filters {
 
         canvas.context.putImageData(imageData, 0, 0);
     }
+    
+    static saturation = (imageObj, canvas) => {
+        let saturation = 2;
+
+        let redLuminance = 0.3086; // constant to determine luminance of red. Similarly, for green and blue
+        let greenLuminance = 0.6094;
+        let blueLuminance = 0.0820;
+
+        let az = (1 - saturation) * redLuminance + saturation;
+        let bz = (1 - saturation) * greenLuminance;
+        let cz = (1 - saturation) * blueLuminance;
+        let dz = (1 - saturation) * redLuminance;
+        let ez = (1 - saturation) * greenLuminance + saturation;
+        let fz = (1 - saturation) * blueLuminance;
+        let gz = (1 - saturation)*redLuminance;
+        let hz = (1 - saturation)*greenLuminance;
+        let iz = (1 - saturation)*blueLuminance + saturation;
+
+
+        canvas.context.drawImage(imageObj, 0,0);
+        let imageData = canvas.getImageData();
+        let pixels = imageData.data;
+
+        for(let i = 0; i < pixels.length; i += 4) {
+            let red = pixels[i]; // Extract original red color [0 to 255]. Similarly for green and blue below
+            let green = pixels[i + 1];
+            let blue = pixels[i + 2];
+
+            let saturatedRed = (az*red + bz*green + cz*blue);
+            let saturatedGreen = (dz*red + ez*green + fz*blue);
+            let saturateddBlue = (gz*red + hz*green + iz*blue);
+
+            pixels[i] = saturatedRed;
+            pixels[i + 1] = saturatedGreen;
+            pixels[i + 2] = saturateddBlue;
+        }
+
+        canvas.context.putImageData(imageData, 0, 0);
+    }
 
     static blur = (imageObj, canvas)  => {
 
