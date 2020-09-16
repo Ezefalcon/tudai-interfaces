@@ -63,7 +63,6 @@ export class Paint {
         }
     }
 
-    // TODO
     applyBrightnessFilter = (e) => {
         console.log(e.target.value)
         Filters.brightness(this.img, this.canvas, e.target.value);
