@@ -60,6 +60,8 @@ export class Paint {
             Filters.binarization(this.img, this.canvas);
         } else if(value === 'blur') {
             Filters.blur(this.img, this.canvas);
+        } else if(value === 'saturation') {
+            Filters.saturation(this.img, this.canvas)
         }
     }
 
