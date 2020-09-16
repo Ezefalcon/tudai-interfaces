@@ -58,6 +58,8 @@ export class Paint {
             Filters.sepia(this.img, this.canvas)
         } else if(value === 'binarization') {
             Filters.binarization(this.img, this.canvas);
+        } else if(value === 'blur') {
+            Filters.blur(this.img, this.canvas);
         }
     }
 
