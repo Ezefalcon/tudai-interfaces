@@ -10,7 +10,7 @@ export class Filters {
         let pixels = imageData.data;
 
         // Loop through the pixels knowing that r-0, g-1, b-2, a-3
-        for (var i = 0; i < pixels.length; i += 4) {
+        for (let i = 0; i < pixels.length; i += 4) {
             pixels[i]   = 255 - pixels[i];   // red
             pixels[i+1] = 255 - pixels[i+1]; // green
             pixels[i+2] = 255 - pixels[i+2]; // blue
@@ -59,16 +59,80 @@ export class Filters {
         canvas.context.putImageData(imageData, 0, 0);
     }
 
+    static binarization = (imageObj, canvas, val)  => {
+
+        canvas.context.drawImage(imageObj, 0,0);
+        let imageData = canvas.getImageData();
+        let pixels = imageData.data;
+
+        for (let i = 0; i < pixels.length; i += 4) {
+            const red = pixels[i];
+            const green = pixels[i+1];
+            const blue = pixels[i+2];
+            const v = (red + green + blue >= 300) ? 280 : 0;
+            pixels[i] = pixels[i+1] = pixels[i+2] = v;
+        }
+
+        canvas.context.putImageData(imageData, 0, 0);
+    }
+
+    static blur = (imageObj, canvas)  => {
+
+        canvas.context.drawImage(imageObj, 0,0);
+        let imageData = canvas.getImageData();
+        let pixels = imageData.data;
+
+        let w = imageObj.width;
+        let h = imageObj.height;
+
+        let kernel = [
+            [1, 1, 1],
+            [1, 1, 1],
+            [1, 1, 1]];
+        
+        for (let x = 0; x < w; x++) {
+            for (let y = 0; y < h; y++) {
+                let upperLeft = ((x-1+w)%w + w*((y-1+h)%h))*4;
+                let upperCenter = ((x-0+w)%w + w*((y-1+h)%h))*4;
+                let upperRight = ((x+1+w)%w + w*((y-1+h)%h))*4;
+                let left = ((x-1+w)%w + w*((y+0+h)%h))*4;
+                let center = ((x-0+w)%w + w*((y+0+h)%h))*4;
+                let right = ((x+1+w)%w + w*((y+0+h)%h))*4;
+                let lowerLeft = ((x-1+w)%w + w*((y+1+h)%h))*4;
+                let lowerCenter = ((x-0+w)%w + w*((y+1+h)%h))*4;
+                let lowerRight = ((x+1+w)%w + w*((y+1+h)%h))*4;
+
+                let red = this.getSumOfSurroundingPixels(pixels, 0, upperLeft, upperCenter, upperRight, left, center, right, lowerLeft, lowerCenter, lowerRight, kernel);
+
+                let green = this.getSumOfSurroundingPixels(pixels, 1, upperLeft, upperCenter, upperRight, left, center, right, lowerLeft, lowerCenter, lowerRight, kernel);
+
+                let blue = this.getSumOfSurroundingPixels(pixels, 2, upperLeft, upperCenter, upperRight, left, center, right, lowerLeft, lowerCenter, lowerRight, kernel);
+
+                pixels[center] = red;
+                pixels[center+1] = green;
+                pixels[center+2] = blue;
+                pixels[center+3] = pixels[lowerCenter+3];
+            }
+        }
+
+        canvas.context.putImageData(imageData, 0, 0);
+    }
+
+    static getSumOfSurroundingPixels(pixels, colorIndex, upperLeft, upperCenter, upperRight, left, center, right, lowerLeft, lowerCenter, lowerRight, kernel) {
+        let p0, p1, p2, p3, p4, p5, p6, p7, p8;
+        p0 = pixels[upperLeft+colorIndex] * kernel[0][0]; // upper left
+        p1 = pixels[upperCenter+colorIndex] * kernel[0][1]; // upper mid
+        p2 = pixels[upperRight+colorIndex] * kernel[0][2]; // upper right
+        p3 = pixels[left+colorIndex] * kernel[1][0]; // left
+        p4 = pixels[center+colorIndex] * kernel[1][1]; // center pixel
+        p5 = pixels[right+colorIndex] * kernel[1][2]; // right
+        p6 = pixels[lowerLeft+colorIndex] * kernel[2][0]; // lower left
+        p7 = pixels[lowerCenter+colorIndex] * kernel[2][1]; // lower mid
+        p8 = pixels[lowerRight+colorIndex] * kernel[2][2]; // lower right
+        return (p0+p1+p2+p3+p4+p5+p6+p7+p8)/9;
+    }
 
     static setTo255IfIsGreaterThanIt(val) {
         return val > 255 ? 255 : val;
-    }
-
-    static setPixel(imageData, x, y, r, g, b, a) {
-        const index = (x + y * imageData.width) * 4;
-        imageData.data[index+0] = r;
-        imageData.data[index+1] = g;
-        imageData.data[index+2] = b;
-        // imageData.data[index+3] = a;
     }
 }
