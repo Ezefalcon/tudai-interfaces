@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
+    <div class="rounded bg-light text-center">
+        <h1>Paint</h1>
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-sm-3">
@@ -24,17 +27,19 @@
                         <span>Brillo</span>
                         <input class="form-control-range" id="brightnessSlider" type="range" min="-30" max="100" value="0" step="1">
                     </div>
+                    <div class="mt-5">
+                        <button id="cleanCanvas" type="button" class="btn btn-primary">Limpiar lienzo</button>
+                        <a href="#" id="downloadImage" type="button" class="btn btn-primary" download="yourIncredibleImage.jpg">Descargar</a>
+                    </div>
+
                 </div>
 
 
             </div>
             <div class="col-sm-8">
-                <div>
+                <div class=" bg-secondary">
                     <input id="pencil" type="image" src="assets/pencil.png" class="btn icon"/>
                     <input id="eraser" type="image" src="assets/eraser.png" class="btn icon"/>
-
-                    <button id="cleanCanvas" type="button" class="btn btn-primary">Limpiar lienzo</button>
-                    <a href="#" id="downloadImage" type="button" class="btn btn-primary" download="yourIncredibleImage.jpg">Descargar</a>
                     <input type="file" id="fileInput"/>
                 </div>
                 <div>
