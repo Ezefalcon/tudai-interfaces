@@ -1,8 +1,12 @@
 import { Canvas } from "./canvas.js";
-import {Chip} from "./chip.js";
+import { Board } from "./board.js";
+import { Player } from "./player.js";
 
 let canvas = new Canvas('#canvas');
 let context = canvas.getContext();
 
-let chip = new Chip('./assets/black-chip.png', 50,50,canvas);
-let chip2 = new Chip('./assets/red-chip.png', 500,500,canvas);
+let player1 = new Player('Zeque', canvas, './assets/black-chip.png');
+let player2 = new Player('Zeque2', canvas, './assets/red-chip.png');
+
+let board = new Board(player1, player2, 10, 6, canvas);
+board.drawPlayersChips();

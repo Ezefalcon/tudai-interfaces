@@ -5,6 +5,7 @@ export class Canvas {
         this.width = canvas.width;
         this.height = canvas.height;
         this.context = canvas.getContext("2d");
+        this.objectsToDraw = [];
     }
 
     setWidth(width) {
@@ -55,5 +56,19 @@ export class Canvas {
 
     getMousePosY = (e) => {
         return this.getMousePositionOnCanvas(e).y;
+    }
+
+    /** All objects added should have an implemented method draw(). */
+    addObjectToDraw = (object) => {
+        this.objectsToDraw.push(object)
+    }
+
+    reDrawAllObjectsBut = (objectThatShouldNotBeReDraw) => {
+        this.objectsToDraw.forEach(obj => {
+            if(objectThatShouldNotBeReDraw !== obj) {
+                obj.draw();
+            }
+        })
+
     }
 }

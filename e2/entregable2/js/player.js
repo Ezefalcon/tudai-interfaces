@@ -1,13 +1,20 @@
+import { Chip } from "./chip.js";
+
 export class Player {
-    constructor(name, canvas) {
+    constructor(name, canvas, chipImgPath) {
         this.name = name;
         this.canvas = canvas;
-        this.fichas = [];
+        this.chipImgPath = chipImgPath;
+        this.chips = [];
     }
 
-    play() {
-
+    addChip = (posX, posY) => {
+        let chip = new Chip(this.chipImgPath, posX,posY,this.canvas);
+        this.chips.push(chip);
     }
 
+    draw = () => {
+        this.chips.forEach(x => x.draw())
+    }
 
 }
