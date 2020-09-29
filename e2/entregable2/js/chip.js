@@ -10,6 +10,7 @@ export class Chip {
         this.loadImage();
         this.addEventListeners();
         this.canvas.addObjectToDraw(this);
+        this.isBlocked = false;
     }
 
     pointInCircle = (x, y) =>  {
@@ -39,12 +40,12 @@ export class Chip {
     }
 
     handleMouseMove = (e) => {
-        if(this.isDragging) {
+        if(this.isDragging && !this.isBlocked) {
             this.posX = this.canvas.getMousePosX(e) - CHIP_SIZE / 2;
             this.posY = this.canvas.getMousePosY(e) - CHIP_SIZE / 2;
             this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
-            this.context.drawImage(this.img, this.posX , this.posY, CHIP_SIZE, CHIP_SIZE);
             this.canvas.reDrawAllObjectsBut(this);
+            this.canvas.drawImage(this.img, this.posX , this.posY, CHIP_SIZE, CHIP_SIZE);
         }
     }
     
@@ -56,8 +57,15 @@ export class Chip {
 
     draw = () => {
         if(!this.isDragging) {
-            this.context.drawImage(this.img, this.posX, this.posY, CHIP_SIZE, CHIP_SIZE);
+            this.canvas.drawImage(this.img, this.posX, this.posY, CHIP_SIZE, CHIP_SIZE);
         }
+    }
+
+    drawAndBlock = () => {
+        this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
+        this.canvas.drawImage(this.img, this.posX, this.posY, CHIP_SIZE, CHIP_SIZE);
+        this.canvas.reDrawAllObjectsBut(this)
+        this.isBlocked = true;
     }
 
     addEventListeners = () =>  {

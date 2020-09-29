@@ -1,4 +1,5 @@
 import { CHIP_SIZE } from "./chip.js";
+import {BoardSquare} from "./board-square.js";
 
 export class Board {
     constructor(player1, player2, rows, columns, canvas) {
@@ -7,7 +8,19 @@ export class Board {
         this.rows = rows;
         this.columns = columns;
         this.canvas = canvas;
+        this.arrows = [];
         this.canvas.addObjectToDraw(this);
+        this.canvas.addEventListener("mouseup", this.checkForArrowsDrop);
+        this.initializeChipsOnTable();
+        this.isPlayerOneTurn = true;
+        this.loadArrowImage();
+    }
+
+    initializeChipsOnTable = () => {
+        this.chipsOnTable = [];
+        for(let i = 0; i < this.rows; i++) {
+            this.chipsOnTable[i] = [];
+        }
     }
 
     getPlayer1ChipsPlace = () => {
@@ -56,8 +69,110 @@ export class Board {
         }
     }
 
+    /** Method expensive AF. */
     draw = () => {
-        this.player1.draw();
+        let place = this.getPlayer1ChipsPlace();
+        let place2 = this.getPlayer2ChipsPlace();
+        this.canvas.drawRect(place.x, place.y, place.width, place.height);
+        this.canvas.drawRect(place2.x, place2.y, place2.width, place2.height);
+        let start = 25; // LEFT
+        const endOfBoard = this.canvas.getWidth() - 25; // Right
+        const bottom = this.canvas.getWidth() / 2;
+        const squareSize = CHIP_SIZE + 10;
+        let top = 25;
+
+        this.arrows = [];
+        for(let i = 0; i < this.columns; i++) {
+            this.canvas.drawImage(this.arrowImage, start, top, squareSize, squareSize);
+            this.arrows.push({x: start, y: top, width: squareSize, height: squareSize});
+            start += squareSize;
+        }
+
+        start = 25;
+        top = 25 + squareSize;
+
+        if(!this.tablePositions) {
+            this.tablePositions = [];
+            for(let i = 1; i <= this.rows; i++) {
+                this.tablePositions[i-1] = [];
+                for(let j = 1; j <= this.columns; j++) {
+                    let boardSquare = new BoardSquare(start, top, squareSize, squareSize);
+                    this.tablePositions[i-1].push(boardSquare)
+                    this.canvas.drawRect(start, top, squareSize, squareSize);
+                    start += squareSize
+                }
+                start = 25
+                top += squareSize;
+            }
+        } else {
+            for(let i = 1; i <= this.rows; i++) {
+                for(let j = 1; j <= this.columns; j++) {
+                    this.canvas.drawRect(start, top, squareSize, squareSize);
+                    start += squareSize
+                }
+                start = 25
+                top += squareSize;
+            }
+        }
+
+        this.chipsOnTable.forEach(x => x.forEach(y => y.draw()))
+    }
+
+    loadArrowImage = () => {
+        this.arrowImage = new Image();
+        this.arrowImage.onload = this.draw;
+        this.arrowImage.src = './assets/down-arrow.png';
+    }
+
+    pointOnArrow = (arrow, mousePosX, mousePosY) =>  {
+        return mousePosX >= arrow.x && mousePosX <= arrow.width + arrow.x
+                                    && mousePosY >= arrow.y
+                                    && mousePosY <= arrow.height + arrow.y;
+    }
+
+    checkForArrowsDrop = (e) => {
+        let mousePosX = this.canvas.getMousePosX(e);
+        let mousePosY = this.canvas.getMousePosY(e);
+        this.arrows.forEach((arrow, column) => {
+            if(this.pointOnArrow(arrow, mousePosX, mousePosY)) {
+                if(this.isPlayerOneTurn) {
+                    this.addChipOnBoardAndDeleteChipFromPlayer(this.player1, column, mousePosX, mousePosY);
+                    this.isPlayerOneTurn = false;
+                    this.player1.blockChips();
+                    this.player2.releaseChips();
+                } else {
+                    this.addChipOnBoardAndDeleteChipFromPlayer(this.player2, column, mousePosX, mousePosY);
+                    this.isPlayerOneTurn = true;
+                    this.player1.releaseChips();
+                    this.player2.blockChips();
+                }
+            }
+        });
+    }
+
+    addChipOnBoardAndDeleteChipFromPlayer = (player, column, mousePosX, mousePosY) => {
+        player.chips = player.chips
+            .filter(chip => {
+                const b = this.pointOnArrow({x: chip.posX, y: chip.posY, width: CHIP_SIZE, height: CHIP_SIZE}, mousePosX, mousePosY);
+                if(b) {
+                    this.setChipPositionOnTable(column, chip);
+                }
+                return !b;
+            });
+    }
+
+    setChipPositionOnTable = (column, chip) => {
+        for(let i = this.rows - 1; i >= 0; i--) {
+            let lastAvailableRow = this.tablePositions[i][column];
+            if(!lastAvailableRow.isChipped) {
+                this.chipsOnTable[i].push(chip);
+                chip.posX = lastAvailableRow.x;
+                chip.posY = lastAvailableRow.y;
+                chip.drawAndBlock()
+                this.tablePositions[i][column].setIsChipped(true);
+                return chip;
+            }
+        }
     }
 }
 

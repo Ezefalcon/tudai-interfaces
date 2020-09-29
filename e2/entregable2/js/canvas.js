@@ -63,12 +63,27 @@ export class Canvas {
         this.objectsToDraw.push(object)
     }
 
+    drawEmAll = () => {
+        this.objectsToDraw.forEach(obj => {
+            obj.draw();
+        });
+    }
+
     reDrawAllObjectsBut = (objectThatShouldNotBeReDraw) => {
         this.objectsToDraw.forEach(obj => {
             if(objectThatShouldNotBeReDraw !== obj) {
                 obj.draw();
             }
-        })
+        });
+    }
 
+    drawRect = (x, y, width, height) => {
+        this.context.beginPath();
+        this.context.rect(x, y, width, height);
+        this.context.stroke();
+    }
+
+    drawImage = (img, posX, posY, width, height) => {
+        this.context.drawImage(img, posX, posY, width, height);
     }
 }

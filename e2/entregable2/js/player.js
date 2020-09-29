@@ -13,8 +13,15 @@ export class Player {
         this.chips.push(chip);
     }
 
+    blockChips = () => {
+        this.chips.forEach(x => x.isBlocked = true)
+    }
+
+    releaseChips = () => {
+        this.chips.forEach(x => x.isBlocked = false)
+    }
+
     draw = () => {
         this.chips.forEach(x => x.draw())
     }
-
 }
