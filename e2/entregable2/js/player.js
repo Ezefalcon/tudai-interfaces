@@ -1,4 +1,5 @@
 import { Chip } from "./chip.js";
+import {ChipColor} from "./chip.js";
 
 export class Player {
     constructor(name, canvas, chipImgPath) {
@@ -8,8 +9,8 @@ export class Player {
         this.chips = [];
     }
 
-    addChip = (posX, posY) => {
-        let chip = new Chip(this.chipImgPath, posX,posY,this.canvas);
+    addChip = (posX, posY, chipColor) => {
+        let chip = new Chip(this.chipImgPath, posX,posY,this.canvas, chipColor);
         this.chips.push(chip);
     }
 

@@ -1,12 +1,18 @@
 export const CHIP_SIZE = 75;
 
+export const ChipColor = {
+    RED: 'red',
+    BLACK: 'black'
+}
+
 export class Chip {
-    constructor(imgPath, posX, posY, canvas) {
+    constructor(imgPath, posX, posY, canvas, chipColor) {
         this.imgPath = imgPath;
         this.posX = posX;
         this.posY = posY;
         this.canvas = canvas;
         this.context = canvas.getContext();
+        this.color = chipColor;
         this.loadImage();
         this.addEventListeners();
         this.canvas.addObjectToDraw(this);
