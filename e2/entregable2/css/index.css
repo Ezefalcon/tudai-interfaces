@@ -3,3 +3,7 @@
     height: 900px;
     margin: 0px auto;
 }
+
+body {
+    background-image: url("../assets/background.jpg");
+}

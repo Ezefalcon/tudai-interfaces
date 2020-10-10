@@ -7,8 +7,71 @@
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-    <div class="container-canvas">
-        <canvas class="text-center" id="canvas" height="900px" width="1400px" style="border:#000 solid 1px;"/>
+    <div class="container mt-3">
+        <button type="button" class="btn btn-danger" id="restartGame">Reiniciar juego</button>
+    </div>
+    <div class="container-canvas mt-2">
+        <canvas class="text-center" id="canvas" height="700px" width="1400px" style="border:#000 solid 1px;"/>
+    </div>
+    <div class="container">
+        <!-- The Modal -->
+        <div class="modal" id="playersModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Players names</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="player1Name">Player 1:</label>
+                            <input type="text" class="form-control" id="player1Name" placeholder="Player 1">
+                        </div>
+                        <div class="form-group">
+                            <label for="player2Name">Player 2:</label>
+                            <input type="text" class="form-control" id="player2Name" placeholder="Player 2">
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success onGameStart" data-dismiss="modal">Start</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- The Modal -->
+        <div class="modal" id="winModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title"><span id="playerNameWon"></span> gano!</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <p>Juega de nuevo</p>
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success onGameStart" data-dismiss="modal">Jugar de nuevo</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

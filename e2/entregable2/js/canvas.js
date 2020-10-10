@@ -5,7 +5,9 @@ export class Canvas {
         this.width = canvas.width;
         this.height = canvas.height;
         this.context = canvas.getContext("2d");
+        this.clearContext();
         this.objectsToDraw = [];
+        this.eventListeners = [];
     }
 
     setWidth(width) {
@@ -16,6 +18,10 @@ export class Canvas {
     setHeight(height) {
         this.canvas.height = height;
         this.height = this.canvas.height;
+    }
+
+    removeEventListeners() {
+
     }
 
     getContext() {
@@ -30,7 +36,14 @@ export class Canvas {
         return this.height;
     }
 
+    removeAllEventListeners() {
+        this.eventListeners.forEach(listener => {
+          this.canvas.removeEventListener(listener.action, listener.func)
+        })
+    }
+
     addEventListener(action, func) {
+        this.eventListeners.push({action: action, func: func})
         this.canvas.addEventListener(action, func);
     }
 

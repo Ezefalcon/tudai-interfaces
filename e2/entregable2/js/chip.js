@@ -69,8 +69,8 @@ export class Chip {
 
     drawAndBlock = () => {
         this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
-        this.canvas.drawImage(this.img, this.posX, this.posY, CHIP_SIZE, CHIP_SIZE);
         this.canvas.reDrawAllObjectsBut(this)
+        this.canvas.drawImage(this.img, this.posX, this.posY, CHIP_SIZE, CHIP_SIZE);
         this.isBlocked = true;
     }
 
