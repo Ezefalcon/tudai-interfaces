@@ -30,6 +30,12 @@ const onPlayerTwoWon = () => {
   $("#playerNameWon").html(player2.name)
 }
 
+$('#playersModal').on('hidden.bs.modal', function (e) {
+  if(!canvas) {
+    startGame();
+  }
+})
+
 $("#playersModal").modal();
 $("#restartGame").on({click: startGame});
 $(".onGameStart").on({click: startGame})

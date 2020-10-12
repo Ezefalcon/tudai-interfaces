@@ -32,6 +32,8 @@ export class Chip {
         if(this.pointInCircle(x, y) && !this.canvas.isDraggingObject) {
             this.isDragging=true;
             this.canvas.isDraggingObject = true;
+            this.lastPlaceX = this.posX;
+            this.lastPlaceY = this.posY;
         }
     }
 
@@ -49,9 +51,7 @@ export class Chip {
         if(this.isDragging && !this.isBlocked) {
             this.posX = this.canvas.getMousePosX(e) - CHIP_SIZE / 2;
             this.posY = this.canvas.getMousePosY(e) - CHIP_SIZE / 2;
-            this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
-            this.canvas.reDrawAllObjectsBut(this);
-            this.canvas.drawImage(this.img, this.posX , this.posY, CHIP_SIZE, CHIP_SIZE);
+            this.cleanAndDraw();
         }
     }
     
@@ -59,6 +59,12 @@ export class Chip {
         this.img = new Image();
         this.img.onload = this.draw;
         this.img.src = this.imgPath;
+    }
+
+    cleanAndDraw = () => {
+        this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
+        this.canvas.reDrawAllObjectsBut(this);
+        this.canvas.drawImage(this.img, this.posX , this.posY, CHIP_SIZE, CHIP_SIZE);
     }
 
     draw = () => {

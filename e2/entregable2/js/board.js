@@ -12,7 +12,8 @@ export class Board {
     this.arrows = [];
     this.canvas.addObjectToDraw(this);
     this.canvas.addEventListener("mouseup", this.checkForArrowsDrop);
-    this.height = this.rows * CHIP_SIZE ;
+    this.height = this.rows * CHIP_SIZE;
+    this.width = this.columns * CHIP_SIZE;
     this.initializeChipsOnTable();
     this.isPlayerOneTurn = true;
     this.loadImages();
@@ -32,7 +33,6 @@ export class Board {
 
   getPlayer1ChipsPlace = () => {
     const width = this.canvas.getWidth();
-    const height = this.canvas.getHeight();
     return {
       x: 20,
       width: width / 6,
@@ -43,7 +43,6 @@ export class Board {
 
   getPlayer2ChipsPlace = () => {
     const width = this.canvas.getWidth();
-    const height = this.canvas.getHeight();
     const placeWidth = width / 6;
     return {
       x: width - placeWidth - 20,
@@ -58,8 +57,6 @@ export class Board {
     let place = this.getPlayer1ChipsPlace();
     let place2 = this.getPlayer2ChipsPlace();
     context.beginPath();
-    // context.rect(place.x, place.y, place.width, place.height);
-    // context.rect(place2.x, place2.y, place2.width, place2.height);
     context.stroke();
     this.addChipsToPlayers(place, place2);
     return place;
@@ -103,7 +100,7 @@ export class Board {
     top = TOP_SPACING + SQUARE_SIZE;
 
     if(!this.tablePositions) {
-      // Initialize everything
+      // Initialize
       this.tablePositions = [];
       for(let i = 1; i <= this.rows; i++) {
         this.tablePositions[i-1] = [];
@@ -163,24 +160,30 @@ export class Board {
   checkForArrowsDrop = (e) => {
     let mousePosX = this.canvas.getMousePosX(e);
     let mousePosY = this.canvas.getMousePosY(e);
-    this.arrows.forEach((arrow, column) => {
+    let arrows = this.arrows;
+    for(const [column, arrow] of arrows.entries()) {
       if(this.pointOnArrow(arrow, mousePosX, mousePosY)) {
         if(this.isPlayerOneTurn) {
-          this.addChipOnBoardAndDeleteChipFromPlayer(this.player1, column, mousePosX, mousePosY);
-          this.player1.blockChips();
-          this.player2.releaseChips();
-          this.isPlayerOneTurn = false;
+          if(this.addChipOnBoardAndDeleteChipFromPlayer(this.player1, column, mousePosX, mousePosY)) {
+            this.player1.blockChips();
+            this.player2.releaseChips();
+            this.isPlayerOneTurn = false;
+          }
         } else {
-          this.addChipOnBoardAndDeleteChipFromPlayer(this.player2, column, mousePosX, mousePosY);
-          this.player1.releaseChips();
-          this.player2.blockChips();
-          this.isPlayerOneTurn = true;
+          if(this.addChipOnBoardAndDeleteChipFromPlayer(this.player2, column, mousePosX, mousePosY)) {
+            this.player1.releaseChips();
+            this.player2.blockChips();
+            this.isPlayerOneTurn = true;
+          }
         }
+        break;
       }
-    });
+    }
   }
 
+  /** Returns if a chip was deleted or not. */
   addChipOnBoardAndDeleteChipFromPlayer = (player, column, mousePosX, mousePosY) => {
+    const chipsSize = player.chips.length
     player.chips = player.chips
       .filter(chip => {
         const b = this.pointOnArrow({x: chip.posX, y: chip.posY, width: CHIP_SIZE, height: CHIP_SIZE}, mousePosX, mousePosY);
@@ -189,7 +192,10 @@ export class Board {
         }
         return !b;
       });
-    this.checkIfWins();
+    if(chipsSize != player.chips.length) {
+      this.checkIfWins();
+      return true;
+    } return false;
   }
 
   setChipPositionOnTable = (column, chip) => {
@@ -256,14 +262,13 @@ export class Board {
 
   alertWinner(consecutiveBlackChips, consecutiveRedChips) {
     if (consecutiveBlackChips == 4) {
-      this.onPlayerOneWin();
+      this.playerOneWin();
     } else if (consecutiveRedChips == 4) {
-      this.onPlayerTwoWin();
+      this.playerTwoWin();
     }
   }
 
   checkDiagonals() {
-    console.log(this.chipsOnTable)
     for (let row = 0; row < this.chipsOnTable.length - 3; row++) {
       for (let col = 3; col < this.chipsOnTable[row].length; col++) {
         let chip1 = this.chipsOnTable[row][col];
@@ -273,9 +278,9 @@ export class Board {
         const chips = [chip1, chip2, chip3, chip4];
         if (chip1 && chip2 && chip3 && chip4) {
           if(this.areAllChipsSameColor(chips, ChipColor.BLACK)) {
-            this.onPlayerOneWin();
+            this.playerOneWin();
           } else if(this.areAllChipsSameColor(chips, ChipColor.RED)) {
-            this.onPlayerTwoWin();
+            this.playerTwoWin();
           }
         }
       }
@@ -292,13 +297,25 @@ export class Board {
         const chips = [chip1, chip2, chip3, chip4];
         if (chip1 && chip2 && chip3 && chip4) {
           if(this.areAllChipsSameColor(chips, ChipColor.BLACK)) {
-            this.onPlayerOneWin();
+            this.playerOneWin();
           } else if(this.areAllChipsSameColor(chips, ChipColor.RED)) {
-            this.onPlayerTwoWin();
+            this.playerTwoWin();
           }
         }
       }
     }
+  }
+
+  playerOneWin() {
+    this.onPlayerOneWin();
+    this.player1.blockChips();
+    this.player2.blockChips();
+  }
+  
+  playerTwoWin() {
+    this.onPlayerTwoWin();
+    this.player1.blockChips();
+    this.player2.blockChips();
   }
 
   areAllChipsSameColor(chips, color) {
