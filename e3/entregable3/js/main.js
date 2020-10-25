@@ -1,65 +1,24 @@
-const banner = $('#banner');
-let topOfParallax;
-let previousScrollValue;
-let bannerHeight;
-let bannerDecimalSize = 99;
-let minBannerScaleValue;
+import { Countdown } from './countdown.js';
 
-document.addEventListener('DOMContentLoaded', function () {
-  topOfParallax = banner.position().top;
-  bannerHeight = banner.height();
-  let innerBannerHeight = bannerHeight * 0.304;
-  minBannerScaleValue = $('nav').height() * 100 / innerBannerHeight;
-  $(window).on('scroll', function(){
+const startDateOfMovie = new Date("Jan 5, 2021 15:37:25");
 
-    let s = $(this).scrollTop(),
-      d = $(document).height(),
-      c = $(this).height();
+document.onload = addScrollListenerParallax();
 
-    if(!previousScrollValue) {
-      previousScrollValue = s;
-    }
-    const scrolled = $(window).scrollTop() + window.innerHeight;
+Countdown.startCountdown(startDateOfMovie, $('#countdown'));
 
-    console.log(scrolled)
+function addScrollListenerParallax() {
+  window.addEventListener("scroll", function(event){
+    let top = this.pageYOffset;
 
-    const scrollPercent = s
-    let topPosition = (topOfParallax - s);
-    let spaceUntilBanner = banner.height() * -0.57;
-    if(topOfParallax + topPosition > spaceUntilBanner) {
-      $('.layer').css({
-        'top': topPosition
-      });
-      if(topPosition < banner.height() * 0.42) {
-        $('.layer-banner').css({
-          'top': topPosition
-        });
-      }
-    } else {
-      // Start scaling down the banner
-      let scale;
-      if(isScrollingDown(s)) {
-        bannerDecimalSize -= 0.5;
-      } else {
-        bannerDecimalSize += 0.5;
-      }
-      previousScrollValue = s;
-
-      // scale = '0.'+bannerDecimalSize
-      let navHeight = $('nav').height();
-      scale = navHeight * 100 / innerBannerHeight;
-      console.log(scale)
-      $('.layer').css({
-        'top': topPosition
-      });
-      banner.css({
-        'transform': 'scale('+scale/100+')',
-        'transform-origin': 'center'
-      })
+    let layers = $('.parallax');
+    let layer, speed;
+    for (let i = 0; i < layers.length; i++) {
+      layer = layers[i];
+      speed = layer.getAttribute('scroll-speed');
+      let yPos = - (top * speed / 100);
+      layer.setAttribute('style', 'transform: translate3d(0px, ' + yPos + 'px, 0px)');
     }
   });
-});
-
-const isScrollingDown = (currentScollPosition) => {
-  return previousScrollValue < currentScollPosition;
 }
+
+console.log($('#layer-1').height())
