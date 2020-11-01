@@ -21,4 +21,22 @@ function addScrollListenerParallax() {
   });
 }
 
+let cards = $(".cards");
+
+let observer = new IntersectionObserver(function(entries) {
+  // isIntersecting is true when element and viewport are overlapping
+  // isIntersecting is false when element and viewport don't overlap
+  if(entries[0].isIntersecting === true)
+    cards.addClass("cards-translate");
+}, { threshold: [0] });
+observer.observe(cards.get(0));
+
+$(window).on('beforeunload', function(){
+  $(window).scrollTop(0);
+});
+
+Promise.all(Array.from(document.images).filter(img => !img.complete).map(img => new Promise(resolve => { img.onload = img.onerror = resolve; }))).then(() => {
+  console.log('images finished loading');
+});
+
 console.log($('#layer-1').height())

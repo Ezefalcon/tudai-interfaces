@@ -1,0 +1,25 @@
+/*Extra small devices (portrait phones, less than 576px)*/
+@media (max-width: 5756px) { }
+
+ /*--Small devices (landscape phones, less than 768px)*/
+@media (max-width: 768px) {
+    .card-text {
+        font-size: 0.7rem;
+    }
+    .card-title {
+        font-size: 1.2rem;
+    }
+}
+
+ /*Medium devices (tablets, less than 992px)*/
+@media (max-width: 992px) {
+    .card-text {
+        font-size: 0.7rem;
+    }
+    .card-title {
+        font-size: 1.3rem;
+    }
+}
+
+ /*Large devices (desktops, less than 1200px)*/
+/*@media (max-width: 1200px) { ... }*/
