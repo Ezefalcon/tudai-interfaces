@@ -1,0 +1,131 @@
+.form-container {
+    background: linear-gradient(180deg, rgba(136,186,226,1) 0%, rgba(128,53,150,1) 100%);
+    border-radius: 17px;
+    color: black;
+    overflow: hidden;
+}
+
+/* button */
+
+
+.button {
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-size: 20px;
+    letter-spacing: 4px;
+    position: relative;
+    background: linear-gradient(180deg, rgba(177,87,224,1) 0%, rgb(22, 244, 201) 100%);
+    border: none;
+    color: #fff;
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+    transition-duration: 0.4s;
+    overflow: hidden;
+    box-shadow: 0 5px 15px #193047;
+    border-radius: 4px;
+}
+
+.button:hover {
+    background: #b157e0;
+    box-shadow: 0px 1px 5px 5px #16f4c9;
+    color: #000;
+}
+
+.button:after {
+    content: "";
+    background: #6e0b7a;
+    display: block;
+    position: absolute;
+    padding-top: 300%;
+    padding-left: 350%;
+    margin-left: -20px !important;
+    margin-top: -120%;
+    opacity: 0;
+    transition: all 0.8s
+}
+
+.button:active:after {
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+    transition: 0s
+}
+
+.button:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(7px);
+}
+
+.button:focus { outline:0; }
+
+.email {
+    position: relative;
+    overflow: hidden;
+    animation-name: appear;
+    animation-duration: 1.5s;
+    animation-fill-mode: forwards;
+}
+
+.name {
+    position: relative;
+    overflow: hidden;
+    animation-name: appear-from-left;
+    animation-duration: 1.5s;
+    animation-fill-mode: forwards;
+}
+
+.message {
+    position: relative;
+    overflow: hidden;
+    animation-name: appear-from-bottom;
+    animation-duration: 1.5s;
+    animation-fill-mode: forwards;
+}
+
+.title {
+    position: relative;
+    overflow: hidden;
+    animation-name: appear-from-top;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes appear {
+    0% {
+        left: 90%;
+    }
+    100% {
+        left:0px;
+    }
+}
+
+@keyframes appear-from-left {
+    0% {
+        right: 100%;
+    }
+    100% {
+        right:0px;
+    }
+}
+
+@keyframes appear-from-bottom {
+    0% {
+        top: 100vh;
+    }
+    100% {
+        top:0px;
+    }
+}
+
+@keyframes appear-from-top {
+    0% {
+        bottom: 100%;
+    }
+    100% {
+        bottom:0px;
+    }
+}
+
