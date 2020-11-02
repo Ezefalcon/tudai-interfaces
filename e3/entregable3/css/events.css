@@ -1,0 +1,19 @@
+/* Styles for the tilt block */
+.tilt {
+    display: block;
+    margin: 0 auto;
+    transition: box-shadow 0.1s, transform 0.1s;
+}
+
+.tilt:hover {
+    box-shadow: 0px 0px 30px rgba(0,0,0, 0.6);
+    cursor: pointer;
+}
+
+.card-header {
+    background: linear-gradient(180deg, rgba(51,92,124,1) 0%, rgba(0,0,0,1) 100%);
+}
+
+#accordion {
+    width: 100%;
+}
