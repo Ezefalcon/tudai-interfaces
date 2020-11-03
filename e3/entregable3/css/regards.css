@@ -69,6 +69,17 @@
     animation-fill-mode: forwards;
 }
 
+.form-control {
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+.form-control:focus {
+    animation-name: makeIt3d;
+    animation-duration: 0.2s;
+    animation-fill-mode: forwards;
+}
+
 .name {
     position: relative;
     overflow: hidden;
@@ -91,6 +102,17 @@
     animation-name: appear-from-top;
     animation-duration: 0.5s;
     animation-fill-mode: forwards;
+}
+
+@keyframes makeIt3d {
+    0% {
+        box-shadow: 0 0.5px 0.75px #ccc;
+        top: -0.5px
+    }
+    100% {
+        box-shadow: 0 4px 6px #ccc;
+        top:-4px;
+    }
 }
 
 @keyframes appear {
@@ -128,4 +150,3 @@
         bottom:0px;
     }
 }
-
