@@ -163,3 +163,58 @@ html {
 .carousel-control-next-icon {
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23BD4A05' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
 }
+
+.loader{
+    background: linear-gradient(180deg, rgba(44,241,236,1) 0%, rgba(69,30,89,1) 75%, rgba(38,7,55,1) 100%);
+    position:fixed;
+    width:100%;
+    height:100%;
+    top:0px;
+    left:0px;
+    z-index:1000;
+}
+
+.center-element {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+}
+
+.spaceship {
+    height: 50px;
+    transform: rotate(45deg);
+    position: fixed;
+    animation: moveShip 2s linear infinite;
+}
+
+.loading {
+    position: fixed;
+    top: 53%;
+}
+
+#frame1 {
+
+}
+
+@keyframes moveShip {
+    0% {
+        left: 48%;
+        top: 50%;
+    }
+    25% {
+        top: 50%;
+        left: 50%;
+    }
+    50% {
+        top: 50%;
+        left: 52%;
+    }
+    75% {
+        top: 50%;
+        left: 50%;
+    }
+    100% {
+        left: 48%;
+        top: 50%;
+    }
+}
