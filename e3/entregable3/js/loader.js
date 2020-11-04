@@ -1,4 +1,4 @@
-$('.nav-link').get().forEach(x => {
+$('.link').get().forEach(x => {
   x.addEventListener('click', () => {
     $('.loader').css({
       visibility: 'initial'
@@ -20,6 +20,6 @@ setTimeout(() => {
   $('body').css({
     overflow: 'auto'
   })
-}, 3000);
+}, 500);
 
 

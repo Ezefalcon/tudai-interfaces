@@ -218,3 +218,12 @@ html {
         top: 50%;
     }
 }
+
+.navbar-nav > li > .dropdown-menu {
+    background-color: #343a40;
+}
+
+.dropdown-item {
+    color: white;
+}
+
