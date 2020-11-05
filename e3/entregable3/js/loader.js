@@ -20,6 +20,6 @@ setTimeout(() => {
   $('body').css({
     overflow: 'auto'
   })
-}, 500);
+}, 2500);
 
 
